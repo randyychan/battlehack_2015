@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by rchan on 3/1/15.
@@ -26,7 +27,7 @@ public enum ImageSaver {
     ArrayList<Bitmap> images = new ArrayList<>();
     static HandlerThread thread;
     static Handler handler;
-
+    ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     static {
         Log.e("RANDY", "STATIC INIT");
         thread = new HandlerThread("ImageSaver");
@@ -43,13 +44,16 @@ public enum ImageSaver {
                 Imgproc.pyrDown(mat, mat);
                 Bitmap bmp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(mat, bmp);
+                ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
                 images.add(bmp);
+                writeLock.unlock();
+
             }
         });
     }
 
 
     public List<Bitmap> getImages() {
-        return images;
+        return (List<Bitmap>) images.clone();
     }
 }
