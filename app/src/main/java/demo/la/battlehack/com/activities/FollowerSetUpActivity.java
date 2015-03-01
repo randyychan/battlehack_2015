@@ -26,7 +26,7 @@ public class FollowerSetUpActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leader_set_up);
+        setContentView(R.layout.activity_follower_set_up_wait);
 
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
