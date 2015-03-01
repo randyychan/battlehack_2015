@@ -8,6 +8,8 @@ import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
 
+import demo.la.battlehack.com.helpers.DropboxUtil;
+
 /**
  * Created by ksutardji on 2/28/15.
  */
@@ -33,6 +35,11 @@ public class NsaApplication extends Application {
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
 
         subscribeForPush();
+
+
+        // Dropbox init
+        Log.e("NsaApplication Dropbox", "init Dropbox");
+        DropboxUtil.INSTANCE.auth(this);
 
     }
 

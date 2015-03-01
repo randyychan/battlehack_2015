@@ -29,7 +29,7 @@ public enum DropboxUtil {
         mDBApi.getSession().startOAuth2Authentication(context);
     }
 
-    public AndroidAuthSession getDropboxSession() {
-        return mDBApi.getSession();
+    public DropboxAPI<AndroidAuthSession> getDbApi() {
+        return mDBApi;
     }
 }

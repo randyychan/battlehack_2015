@@ -1,6 +1,7 @@
 package demo.la.battlehack.com.helpers;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -19,6 +20,8 @@ public class EmailHelper {
     private static final String SENDGRID_USERNAME = "ksutardji";
     private static final String SENDGRID_PASSWORD = "nostringsattached";
 
+    public Context context;
+
     private SendGrid sendgrid;
     public EmailHelper() {
         sendgrid = new SendGrid(SENDGRID_USERNAME, SENDGRID_PASSWORD);
@@ -26,7 +29,8 @@ public class EmailHelper {
 
     }
 
-    public void sendEmailTask() {
+    public void sendEmailTask(Context context) {
+        this.context = context;
         EmailAsync emailAsync = new EmailAsync();
         emailAsync.execute(new Void[0]);
     }
@@ -36,6 +40,8 @@ public class EmailHelper {
         Log.e("RANDY", "SENDING EMAIL!!");
 
         try {
+
+            // Sendgrid init
             SendGrid.Email email = new SendGrid.Email();
             email.addTo("randyychan@gmail.com");
             email.setFrom("noreply@nsa.battlehack");
@@ -49,7 +55,10 @@ public class EmailHelper {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
                 byte[] bitmapdata = bos.toByteArray();
                 ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
-                email.addAttachment("image" + count + ".jpg", bs);
+                String filename = "image" + count + ".jpg";
+                email.addAttachment(filename, bs);
+                DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
+                        bs, bitmapdata.length, null, true, null);
                 count++;
                 if (count > 5)
                     break;

@@ -68,6 +68,20 @@
             android:label="Send Venmo info to partner!" >
         </activity>
 
+        <!-- Dropbox -->
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-7e6llv53ut0cewx" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- Parse Push Permissions -->
         <service android:name="com.parse.PushService" />
 
