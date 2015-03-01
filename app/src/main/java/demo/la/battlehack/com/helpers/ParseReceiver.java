@@ -69,6 +69,9 @@ public class ParseReceiver extends ParsePushBroadcastReceiver {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             if(intent != null) {
+                //receiver sends summary of run to him/herself
+                EmailHelper emailHelper = new EmailHelper();
+                emailHelper.sendEmail();
                 context.startActivity(intent);
             }
         } catch(ActivityNotFoundException e) {
