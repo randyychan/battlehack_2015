@@ -10,6 +10,8 @@ import com.sendgrid.SendGridException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by ksutardji on 2/28/15.
@@ -55,6 +57,9 @@ public class EmailHelper {
                     break;
             }
 
+            ByteArrayInputStream bs = new ByteArrayInputStream(generateGIF());
+            email.addAttachment("animated_run.gif", bs);
+
             String text = "Thanks for using NoStringsAttached!\n\n";
             text += "Here is your summary:\n" +
                     "Your running partner: " + DataStore.leader + "\n" +
@@ -73,6 +78,18 @@ public class EmailHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] generateGIF() {
+        ArrayList<Bitmap> bitmaps = ImageSaver.INSTANCE.images;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        GifSequenceWriter encoder = new GifSequenceWriter();
+        encoder.start(bos);
+        for (Bitmap bitmap : bitmaps) {
+            encoder.addFrame(bitmap);
+        }
+        encoder.finish();
+        return bos.toByteArray();
     }
 
     private class EmailAsync extends AsyncTask<Void, Void, Void> {
