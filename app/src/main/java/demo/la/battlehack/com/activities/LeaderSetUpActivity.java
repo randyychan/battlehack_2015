@@ -11,6 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.SendCallback;
+
+import demo.la.battlehack.com.helpers.ParseSender;
 import demo.la.battlehack.com.randyopencv.R;
 
 public class LeaderSetUpActivity extends ActionBarActivity {
@@ -36,6 +41,17 @@ public class LeaderSetUpActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 // start timer activity and send gcm to follower to start.
+                // send ParsePush to follower to start service
+                ParsePush push = ParseSender.sendStart();
+                push.sendInBackground(new SendCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Intent intent = new Intent(LeaderSetUpActivity.this, LeaderRunningActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+
             }
         });
 

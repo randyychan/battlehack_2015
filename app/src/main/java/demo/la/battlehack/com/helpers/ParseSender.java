@@ -44,7 +44,6 @@ public class ParseSender {
     }
 
     public static ParsePush sendStop() {
-        String recipient = "";
 
         Log.e("PUSH Stop", "Creating New Push");
         ParsePush push = new ParsePush();
@@ -53,7 +52,7 @@ public class ParseSender {
         userQuery.whereEqualTo("username", DataStore.recipient);
         // Find devices associated with the user
         ParseQuery deviceQuery = ParseInstallation.getQuery();
-        deviceQuery.whereEqualTo("GCMSenderId", recipient);
+        deviceQuery.whereEqualTo("username", DataStore.recipient);
         push.setQuery(deviceQuery);
 
 

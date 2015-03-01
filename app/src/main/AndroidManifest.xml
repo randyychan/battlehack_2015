@@ -43,7 +43,7 @@
             android:screenOrientation="landscape" >
             android:label="@string/app_name" >
         </activity>
-        <activity android:name="demo.la.battlehack.com.activities.LeaderActivity"
+        <activity android:name="demo.la.battlehack.com.activities.LeaderRunningActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
 
