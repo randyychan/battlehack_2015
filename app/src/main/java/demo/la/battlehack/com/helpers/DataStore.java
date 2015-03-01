@@ -5,6 +5,8 @@ package demo.la.battlehack.com.helpers;
  */
 public class DataStore {
 
+    public static final String leader = "kevin";
+    public static final String follower = "randy";
     public static String sender = "kevin";
     public static String recipient = "randy";
     public static String recipientVenmo = "Randyychan";

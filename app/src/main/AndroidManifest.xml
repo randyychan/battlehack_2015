@@ -59,10 +59,12 @@
         </activity>
         <activity
             android:name="demo.la.battlehack.com.activities.LeaderSetUpActivity"
+            android:screenOrientation="portrait"
             android:label="Running partner Info" >
         </activity>
         <activity
             android:name="demo.la.battlehack.com.activities.FollowerSetUpActivity"
+            android:screenOrientation="portrait"
             android:label="Send Venmo info to partner!" >
         </activity>
 
