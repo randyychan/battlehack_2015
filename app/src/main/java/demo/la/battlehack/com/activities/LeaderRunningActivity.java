@@ -49,7 +49,7 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
                         Intent venmoIntent = VenmoLibrary.openVenmoPayment("2410", "NoStringsAttached",
                                 DataStore.recipientVenmo,
                                 String.valueOf(calculateAmount()),
-                                "Thanks for running with me! for " + DataStore.totalTime + " seconds.",
+                                "You ran for " + DataStore.totalTime + " seconds. I hope you enjoyed your run!",
                                 "charge");
                         startActivityForResult(venmoIntent, 1111);
                         finish();

@@ -1,2 +1,4 @@
-include ':app'
+include ':app', ':sendgrid-android'
 include ':libraries:opencv'
+include ':libraries:sendgrid-android'
+project(':sendgrid-android').projectDir = new File('libraries/sendgrid-android')

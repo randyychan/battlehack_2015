@@ -1,5 +1,8 @@
 package demo.la.battlehack.com.helpers;
 
+
+import android.os.AsyncTask;
+
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
 
@@ -15,30 +18,48 @@ public class EmailHelper {
     public EmailHelper() {
         sendgrid = new SendGrid(SENDGRID_USERNAME, SENDGRID_PASSWORD);
 
+
+    }
+
+    public void sendEmailTask() {
+        EmailAsync emailAsync = new EmailAsync();
+        emailAsync.execute(new Void[0]);
     }
 
     public void sendEmail() {
 
-        SendGrid.Email email = new SendGrid.Email();
-        email.addTo("randyychan@gmail.com");
-        email.setFrom("noreply@nsa.battlehack");
-        email.setSubject("Summary of Your Run!");
-
-        String text = "Thanks for using NoStringsAttached! Here is your summary!";
-        text += "Here is your summary:\n" +
-                "Your running partner: " + DataStore.leader + "\n" +
-                "You ran: " + DataStore.totalTime + " seconds.\n" +
-                // TODO: add pictures or gifs
-                "\n" +
-                "Brought to you by NoStringsAttached";
-        email.setText(text);
-
         try {
-            SendGrid.Response response = sendgrid.send(email);
-            System.out.println(response.getMessage());
+            SendGrid.Email email = new SendGrid.Email();
+            email.addTo("randyychan@gmail.com");
+            email.setFrom("noreply@nsa.battlehack");
+            email.setSubject("Summary of Your Run!");
+
+            String text = "Thanks for using NoStringsAttached! Here is your summary!";
+            text += "Here is your summary:\n" +
+                    "Your running partner: " + DataStore.leader + "\n" +
+                    "You ran: " + DataStore.totalTime + " seconds.\n" +
+                    // TODO: add pictures or gifs
+                    "\n" +
+                    "Brought to you by NoStringsAttached";
+            email.setText(text);
+
+            try {
+                SendGrid.Response response = sendgrid.send(email);
+                System.out.println(response.getMessage());
+            } catch (SendGridException e) {
+                System.err.println(e);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (SendGridException e) {
-            System.err.println(e);
+    }
+
+    private class EmailAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            sendEmail();
+            return null;
         }
     }
 }
