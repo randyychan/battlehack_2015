@@ -33,4 +33,5 @@ dependencies {
     compile files('src/main/libs/ndeftools-1.2.3.jar')
     compile files('src/main/libs/json-simple-1.1.1.jar')
     compile files('src/main/libs/sendgrid-java.jar')
+    compile files('src/main/libs/dropbox-lib/dropbox-android-sdk-1.6.3.jar')
 }

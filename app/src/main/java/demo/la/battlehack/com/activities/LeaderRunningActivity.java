@@ -87,7 +87,12 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
         Log.e("Leader", "TICK");
 
         DataStore.totalTime++;
-        durationTextView.setText(DataStore.totalTime);
+        LeaderRunningActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                durationTextView.setText(DataStore.totalTime + " secs");
+            }
+        });
 
     }
 }
