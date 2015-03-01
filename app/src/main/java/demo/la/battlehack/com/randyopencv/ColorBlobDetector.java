@@ -42,6 +42,7 @@ public class ColorBlobDetector {
     private double normalizedX = 0;
     private double normalizedY = 0;
 
+    private UpdateCallback updateCallback;
 
     private static Scalar lowerGreen;
     private static Scalar upperGreen;
@@ -60,6 +61,9 @@ public class ColorBlobDetector {
         upperGreen.val[3] = 255;
     }
 
+    public ColorBlobDetector(UpdateCallback updateCallback) {
+        this.updateCallback = updateCallback;
+    }
 
 
     public void setHsvColor(Scalar hsvColor) {
@@ -174,5 +178,24 @@ public class ColorBlobDetector {
         lowerBoundThreshold();
         clipLowerBounds();
         Log.e("RANDY", "Normalized value X: " + normalizedX + "  Normalized value Y: " + normalizedY);
+
+        if (updateCallback != null) {
+            updateCallback.onRangeUpdate(normalizedX, normalizedY);
+        }
     }
+
+    public double getNormalizedY() {
+        return normalizedY;
+    }
+
+    public double getNormalizedX() {
+        return normalizedX;
+    }
+
+    interface UpdateCallback {
+        void onRangeUpdate(double rangeX, double rangeY);
+    }
+
+
+
 }

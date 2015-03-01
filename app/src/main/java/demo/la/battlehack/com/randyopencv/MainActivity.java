@@ -1,16 +1,11 @@
 package demo.la.battlehack.com.randyopencv;
 
-import android.media.MediaPlayer;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -19,16 +14,13 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.List;
+import demo.la.battlehack.com.audio.AudioOutput;
 
-
-public class MainActivity extends ActionBarActivity implements View.OnTouchListener, CameraBridgeViewBase.CvCameraViewListener2 {
+public class MainActivity extends ActionBarActivity implements View.OnTouchListener, CameraBridgeViewBase.CvCameraViewListener2, ColorBlobDetector.UpdateCallback {
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -55,12 +47,9 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
     private Scalar                  mBlobColorRgba;
     private Scalar                  mBlobColorHsv;
     private ColorBlobDetector       mDetector;
-    private Mat                     mSpectrum;
-    private Size                    SPECTRUM_SIZE;
-    private Scalar                  CONTOUR_COLOR;
 
-    Button button;
-    Boolean playing = false;
+
+    AudioOutput audioOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +63,8 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaPlayer mediaPlayer;
-                mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mono_audio);
-                if(!playing) {
-                    mediaPlayer.start();
-                } else {
-                    mediaPlayer.stop();
-                }
-            }
-        });
+        audioOutput = new AudioOutput(this);
+
     }
 
     @Override
@@ -124,12 +102,9 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
     @Override
     public void onCameraViewStarted(int width, int height) {
         mRgba = new Mat(height, width, CvType.CV_8UC4);
-        mDetector = new ColorBlobDetector();
-        mSpectrum = new Mat();
+        mDetector = new ColorBlobDetector(this);
         mBlobColorRgba = new Scalar(255);
         mBlobColorHsv = new Scalar(255);
-        SPECTRUM_SIZE = new Size(200, 64);
-        CONTOUR_COLOR = new Scalar(255,0,0,255);
     }
 
     @Override
@@ -162,6 +137,9 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         if (mIsColorSelected) {
             return true;
         }
+
+        audioOutput.startBeep();
+
 
         int cols = mRgba.cols();
         int rows = mRgba.rows();
@@ -216,5 +194,10 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         Imgproc.cvtColor(pointMatHsv, pointMatRgba, Imgproc.COLOR_HSV2RGB_FULL, 4);
 
         return new Scalar(pointMatRgba.get(0, 0));
+    }
+
+    @Override
+    public void onRangeUpdate(double rangeX, double rangeY) {
+        audioOutput.setNum(rangeX);
     }
 }
