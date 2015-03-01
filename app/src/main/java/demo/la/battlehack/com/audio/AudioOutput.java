@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
     enum Channel {
         LEFT, RIGHT, MIDDLE;
     }
-
+    private boolean isTooClose = false;
     private static final int constantPause = 100;
     MediaPlayer mediaPlayer;
     Context context;
@@ -38,7 +39,11 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
         handler = new Handler(thread.getLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                beep();
+                if (msg.what == 0) {
+                    beep();
+                } else {
+                    beepTooClose();
+                }
                 return false;
             }
         });
@@ -60,8 +65,8 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
         }
     }
 
-    public void startBeep() {
-        handler.sendEmptyMessage(0);
+    public void startBeep(int what) {
+        handler.sendEmptyMessage(what);
     }
 
     public void beep() {
@@ -105,6 +110,29 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    public void beepTooClose() {
+
+        while(isTooClose) {
+
+                if(!isTooClose) {
+                    // no need to beep
+                    if (mediaPlayer.isPlaying())
+                        mediaPlayer.pause();
+
+                    break;
+                }
+                mediaPlayer.setVolume(1, 1);
+
+
+                // set pause frequency
+
+                // start beep
+                if (mediaPlayer != null && !mediaPlayer.isPlaying());
+                mediaPlayer.start();
         }
 
     }
@@ -179,5 +207,17 @@ public long freq(double num) {
         mediaPlayer.release();
         mediaPlayer = null;
 
+    }
+
+    public void isTooClose(boolean isTooClose) {
+        this.isTooClose = isTooClose;
+
+        if (isTooClose) {
+            Log.e("RANDY", "IS TOO CLOSE!!");
+            startBeep(1);
+        } else if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            Log.e("RANDY", "NOT CLOSE!!");
+            mediaPlayer.pause();
+        }
     }
 }
