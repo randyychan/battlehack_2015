@@ -27,7 +27,6 @@ public enum ImageSaver {
     ArrayList<Bitmap> images = new ArrayList<>();
     static HandlerThread thread;
     static Handler handler;
-    ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     static {
         Log.e("RANDY", "STATIC INIT");
         thread = new HandlerThread("ImageSaver");
@@ -44,9 +43,7 @@ public enum ImageSaver {
                 Imgproc.pyrDown(mat, mat);
                 Bitmap bmp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(mat, bmp);
-                ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
                 images.add(bmp);
-                writeLock.unlock();
 
             }
         });
