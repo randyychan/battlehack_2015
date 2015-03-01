@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import demo.la.battlehack.com.randyopencv.Constants;
 import demo.la.battlehack.com.randyopencv.R;
 
 /**
@@ -39,7 +40,6 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
         handler = new Handler(thread.getLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                Log.e("RANDY", "GOT MESSAGE");
                 beep();
                 return false;
             }
@@ -67,6 +67,7 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
     }
 
     public void beep() {
+        setIsPlaying(true);
 
         long pauseFreq;
         while(true) {
@@ -76,7 +77,10 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
 
                 if(leftOrRight == Channel.MIDDLE) {
                     // no need to beep
-                    continue;
+                    if (mediaPlayer.isPlaying())
+                        mediaPlayer.pause();
+                    setIsPlaying(false);
+                    break;
                 }
 
                 // set left or right volume
@@ -86,7 +90,8 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
                 pauseFreq = freq(getNum());
 
                 // start beep
-                mediaPlayer.start();
+                if (!mediaPlayer.isPlaying());
+                    mediaPlayer.start();
                 setIsPlaying(true);
 
                 // pause frequency
@@ -116,8 +121,8 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
     }
 
     public Channel leftOrRight(double num) {
-        if(num <= -0.2) return Channel.LEFT;
-        else if(num >= 0.2) return Channel.RIGHT;
+        if(num <= -Constants.LOWER_THRESHOLD) return Channel.LEFT;
+        else if(num >= Constants.LOWER_THRESHOLD) return Channel.RIGHT;
         return Channel.MIDDLE;
     }
 
@@ -126,7 +131,7 @@ public long freq(double num) {
         num = Math.abs(num);
         // 1 is max
         if(num > 1) num = 1;
-        return (long)(100/(num-0.2));
+        return (long)(100/(num));
     }
 
     public void setNum(double num) {
@@ -152,6 +157,8 @@ public long freq(double num) {
     public void onPrepared(MediaPlayer mp) {
         Toast.makeText(context, "Media Player prepared!", Toast.LENGTH_LONG).show();
         prepared = true;
+        mediaPlayer.start();
+        mediaPlayer.pause();
     }
 
     /**

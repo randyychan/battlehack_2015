@@ -138,9 +138,6 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
             return true;
         }
 
-        audioOutput.startBeep();
-
-
         int cols = mRgba.cols();
         int rows = mRgba.rows();
 
@@ -199,5 +196,9 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
     @Override
     public void onRangeUpdate(double rangeX, double rangeY) {
         audioOutput.setNum(rangeX);
+
+        if (!audioOutput.isPlaying() && Math.abs(rangeX) > Constants.LOWER_THRESHOLD) {
+            audioOutput.startBeep();
+        }
     }
 }

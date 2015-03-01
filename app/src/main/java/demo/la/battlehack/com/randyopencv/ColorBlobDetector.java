@@ -18,7 +18,7 @@ import java.util.List;
 public class ColorBlobDetector {
 
     private static final double UPPER_BOUNDS = 0.8;
-    private static final double LOWER_BOUND_CLIP = 0.2;
+    private static final double LOWER_BOUND_CLIP = Constants.LOWER_THRESHOLD;
 
     // Lower and Upper bounds for range checking in HSV color space
     private Scalar mLowerBound = new Scalar(0);
@@ -93,7 +93,8 @@ public class ColorBlobDetector {
     public void processFilterColor(Mat rgbaImage) {
 
         Imgproc.cvtColor(rgbaImage, rgbaImage, Imgproc.COLOR_RGB2HSV_FULL);
-        Core.inRange(rgbaImage, lowerGreen, upperGreen, rgbaImage);
+//        Core.inRange(rgbaImage, lowerGreen, upperGreen, rgbaImage);
+        Core.inRange(rgbaImage, mLowerBound, mUpperBound, rgbaImage);
         Imgproc.pyrDown(rgbaImage, mPyrDownMat);
         Imgproc.pyrDown(mPyrDownMat, mPyrDownMat);
         Imgproc.pyrDown(mPyrDownMat, mPyrDownMat);
@@ -138,6 +139,19 @@ public class ColorBlobDetector {
         contourz.add(drawThisContour);
         Imgproc.drawContours(rgbaImage, contourz, -1, CONTOUR_COLOR);
 
+
+        Point pt = new Point();
+        pt.x = 50;
+        pt.y = 200;
+        Log.e("RANDY", "Normalized value X: " + normalizedX + "  Normalized value Y: " + normalizedY);
+
+        if (normalizedX > 0) {
+            Core.putText(rgbaImage, "right: " + normalizedX, pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+        } else if (normalizedX < 0){
+            Core.putText(rgbaImage, "left: " + normalizedX, pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+        } else {
+            Core.putText(rgbaImage, "centered", pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+        }
         mPyrDownMat.release();
     }
 
@@ -177,7 +191,6 @@ public class ColorBlobDetector {
         normalizeValues();
         lowerBoundThreshold();
         clipLowerBounds();
-        Log.e("RANDY", "Normalized value X: " + normalizedX + "  Normalized value Y: " + normalizedY);
 
         if (updateCallback != null) {
             updateCallback.onRangeUpdate(normalizedX, normalizedY);
