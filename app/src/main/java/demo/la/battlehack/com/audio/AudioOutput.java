@@ -132,7 +132,7 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
 
                 // start beep
                 if (mediaPlayer != null && !mediaPlayer.isPlaying());
-                mediaPlayer.start();
+                    mediaPlayer.start();
         }
 
     }

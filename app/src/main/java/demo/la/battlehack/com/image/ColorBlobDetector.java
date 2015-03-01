@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import demo.la.battlehack.com.helpers.Constants;
+import demo.la.battlehack.com.helpers.EmailHelper;
+import demo.la.battlehack.com.helpers.ImageSaver;
 
 public class ColorBlobDetector {
 
@@ -94,6 +96,8 @@ public class ColorBlobDetector {
     }
 
     public void processFilterColor(Mat rgbaImage) {
+        Mat copy = rgbaImage.clone();
+        ImageSaver.INSTANCE.addImage(copy);
         Imgproc.cvtColor(rgbaImage, rgbaImage, Imgproc.COLOR_RGB2HSV_FULL);
 //        Core.inRange(rgbaImage, lowerGreen, upperGreen, rgbaImage);
         Core.inRange(rgbaImage, mLowerBound, mUpperBound, rgbaImage);
