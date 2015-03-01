@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import demo.la.battlehack.com.randyopencv.Constants;
+import demo.la.battlehack.com.helpers.Constants;
 
 public class ColorBlobDetector {
 
