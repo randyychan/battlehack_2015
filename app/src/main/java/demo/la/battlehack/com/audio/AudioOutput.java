@@ -70,71 +70,79 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
     }
 
     public void beep() {
-        setIsPlaying(true);
+        try {
 
-        long pauseFreq;
-        while(true) {
-            try {
-                // get left or right vibration signal
-                Channel leftOrRight = leftOrRight(getNum());
+            setIsPlaying(true);
 
-                if(leftOrRight == Channel.MIDDLE) {
-                    // no need to beep
-                    if (mediaPlayer.isPlaying())
-                        mediaPlayer.pause();
+            long pauseFreq;
+            while (true) {
+                try {
+                    // get left or right vibration signal
+                    Channel leftOrRight = leftOrRight(getNum());
 
-                    setIsPlaying(false);
-                    break;
-                }
+                    if (leftOrRight == Channel.MIDDLE) {
+                        // no need to beep
+                        if (mediaPlayer.isPlaying())
+                            mediaPlayer.pause();
 
-                // set left or right volume
-                setVolume(leftOrRight);
+                        setIsPlaying(false);
+                        break;
+                    }
 
-                // set pause frequency
-                pauseFreq = freq(getNum());
+                    // set left or right volume
+                    setVolume(leftOrRight);
 
-                // start beep
-                if (mediaPlayer != null && !mediaPlayer.isPlaying());
+                    // set pause frequency
+                    pauseFreq = freq(getNum());
+
+                    // start beep
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) ;
                     mediaPlayer.start();
-                setIsPlaying(true);
+                    setIsPlaying(true);
 
-                // pause frequency
-                Thread.sleep(constantPause);
+                    // pause frequency
+                    Thread.sleep(constantPause);
 
-                if (mediaPlayer != null) {
-                    mediaPlayer.pause();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.pause();
+                    }
+                    // pause based on frequency
+                    Thread.sleep(pauseFreq);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                // pause based on frequency
-                Thread.sleep(pauseFreq);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-        }
+        } catch (Exception e) {
 
+        }
     }
 
     public void beepTooClose() {
+        try {
+            while (isTooClose) {
 
-        while(isTooClose) {
-
-                if(!isTooClose) {
+                if (!isTooClose) {
                     // no need to beep
                     if (mediaPlayer.isPlaying())
                         mediaPlayer.pause();
 
                     break;
                 }
-                mediaPlayer.setVolume(1, 1);
+
+                if (mediaPlayer != null)
+                    mediaPlayer.setVolume(1, 1);
 
 
                 // set pause frequency
 
                 // start beep
-                if (mediaPlayer != null && !mediaPlayer.isPlaying());
+                if (mediaPlayer != null && !mediaPlayer.isPlaying())
                     mediaPlayer.start();
-        }
+            }
+        } catch (Exception e) {
 
+        }
     }
 
     public void setVolume(Channel leftOrRight) {
@@ -204,7 +212,7 @@ public long freq(double num) {
     }
 
     public void releaseMediaPlayer() {
-        mediaPlayer.release();
+//        mediaPlayer.release();
         mediaPlayer = null;
 
     }

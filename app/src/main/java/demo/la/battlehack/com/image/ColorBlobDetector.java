@@ -1,8 +1,7 @@
 package demo.la.battlehack.com.image;
 
-import android.util.Log;
+import android.os.Handler;
 
-import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -17,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import demo.la.battlehack.com.helpers.Constants;
-import demo.la.battlehack.com.helpers.EmailHelper;
 import demo.la.battlehack.com.helpers.ImageSaver;
 
 public class ColorBlobDetector {
@@ -37,7 +35,7 @@ public class ColorBlobDetector {
     private Mat mHierarchy = new Mat();
     private List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
     private List<MatOfPoint> contourz = new ArrayList<MatOfPoint>();
-
+    private Handler handler = new Handler();
     private double rawX = 0;
     private double rawY = 0;
     private float rawRadius = 0;
@@ -46,7 +44,7 @@ public class ColorBlobDetector {
     private boolean isTooClose = false;
     private double normalizedX = 0;
     private double normalizedY = 0;
-
+    private boolean process = false;
     private UpdateCallback updateCallback;
 
     private static Scalar lowerGreen;
@@ -93,11 +91,22 @@ public class ColorBlobDetector {
             spectrumHsv.put(0, j, tmp);
         }
 
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                process = true;
+                handler.postDelayed(this, 3000);
+            }
+        }, 3000);
+
     }
 
     public void processFilterColor(Mat rgbaImage) {
-        Mat copy = rgbaImage.clone();
-        ImageSaver.INSTANCE.addImage(copy);
+        if (process) {
+            process = false;
+            Mat copy = rgbaImage.clone();
+            ImageSaver.INSTANCE.addImage(copy);
+        }
         Imgproc.cvtColor(rgbaImage, rgbaImage, Imgproc.COLOR_RGB2HSV_FULL);
 //        Core.inRange(rgbaImage, lowerGreen, upperGreen, rgbaImage);
         Core.inRange(rgbaImage, mLowerBound, mUpperBound, rgbaImage);
@@ -149,7 +158,6 @@ public class ColorBlobDetector {
         Point pt = new Point();
         pt.x = 50;
         pt.y = 200;
-        Log.e("RANDY", "Normalized value X: " + normalizedX + "  Normalized value Y: " + normalizedY);
 
         if (normalizedX > 0) {
             Core.putText(rgbaImage, "right: " + String.format( "%.2f", normalizedX ), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
@@ -207,13 +215,12 @@ public class ColorBlobDetector {
         if (updateCallback != null) {
 
             if (rawRadius > 300 && !isTooClose) {
-                Log.e("RANDY", "normalize is too close");
                 isTooClose = true;
                 updateCallback.onRangeUpdate(0, 0);
 
                 updateCallback.distanceClose(true);
             } else if (rawRadius <= 300 && isTooClose) {
-                Log.e("RANDY", "normalize not too close");
+
 
                 isTooClose = false;
                 updateCallback.distanceClose(false);

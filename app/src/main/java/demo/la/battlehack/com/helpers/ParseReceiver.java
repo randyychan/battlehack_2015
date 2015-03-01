@@ -56,12 +56,15 @@ public class ParseReceiver extends ParsePushBroadcastReceiver {
     }
 
     private void startFollowerService() {
+        Log.e("RANDY", "START FOLLOWER SERVICE");
+
         Intent intent = new Intent(context, CameraActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     private void stopFollowerService() {
+        Log.e("RANDY", "STOP FOLLOWER SERVICE");
         PackageManager pm = context.getPackageManager();
 
         try {
