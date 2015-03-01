@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="/Users/rchan/Documents/RandyOpenCv/libraries/opencv/build/intermediates/bundles/debug/assets"/></dataSet><dataSet config="main"><source path="/Users/rchan/Documents/RandyOpenCv/libraries/opencv/src/androidTest/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="debug"><source path="/Users/ksutardji/projects/battlehack_2015/libraries/opencv/build/intermediates/bundles/debug/assets"/></dataSet><dataSet config="main"><source path="/Users/ksutardji/projects/battlehack_2015/libraries/opencv/src/androidTest/assets"/></dataSet></merger>

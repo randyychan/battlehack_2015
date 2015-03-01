@@ -1,5 +1,6 @@
 package demo.la.battlehack.com.randyopencv;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -56,6 +58,10 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
     private Mat                     mSpectrum;
     private Size                    SPECTRUM_SIZE;
     private Scalar                  CONTOUR_COLOR;
+
+    Button button;
+    Boolean playing = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +73,20 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.surface_view);
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer;
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mono_audio);
+                if(!playing) {
+                    mediaPlayer.start();
+                } else {
+                    mediaPlayer.stop();
+                }
+            }
+        });
     }
 
     @Override
