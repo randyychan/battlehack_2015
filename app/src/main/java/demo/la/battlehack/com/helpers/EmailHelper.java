@@ -1,10 +1,15 @@
 package demo.la.battlehack.com.helpers;
 
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by ksutardji on 2/28/15.
@@ -26,7 +31,9 @@ public class EmailHelper {
         emailAsync.execute(new Void[0]);
     }
 
+
     public void sendEmail() {
+        Log.e("RANDY", "SENDING EMAIL!!");
 
         try {
             SendGrid.Email email = new SendGrid.Email();
@@ -34,10 +41,24 @@ public class EmailHelper {
             email.setFrom("noreply@nsa.battlehack");
             email.setSubject("Summary of Your Run!");
 
-            String text = "Thanks for using NoStringsAttached! Here is your summary!\n";
-            text += "Here is your summary:\n\n" +
+
+            int count = 0;
+            for (Bitmap bitmap : ImageSaver.INSTANCE.getImages()) {
+                Log.e("RANDY", "ATTACHING EMAIL!! " + count);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+                ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
+                email.addAttachment("image" + count + ".jpg", bs);
+                count++;
+                if (count > 5)
+                    break;
+            }
+
+            String text = "Thanks for using NoStringsAttached!\n\n";
+            text += "Here is your summary:\n" +
                     "Your running partner: " + DataStore.leader + "\n" +
-                    "You ran: " + DataStore.totalTime + " seconds\n" +
+                    "You ran: " + DataStore.totalTime + " seconds.\n" +
                     // TODO: add pictures or gifs
                     "\n" +
                     "Brought to you by NoStringsAttached";
