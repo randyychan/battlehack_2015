@@ -51,7 +51,7 @@ public class EmailHelper {
             email.setSubject("Summary of Your Run!");
 
             long curTime = System.currentTimeMillis();
-            Object[] bitMapDataArray = new Object[10];
+            Object[] bitMapDataArray = new Object[ImageSaver.INSTANCE.getImages().size()];
             int count = 0;
             for (Bitmap bitmap : ImageSaver.INSTANCE.getImages()) {
                 Log.e("RANDY", "ATTACHING EMAIL!! " + count);
@@ -66,6 +66,7 @@ public class EmailHelper {
                 count++;
                 if (count > 5)
                     break;
+
             }
 
             byte[] gifArray = generateGIF();
@@ -101,6 +102,9 @@ public class EmailHelper {
                 DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + curTime + "/" + filename,
                         bs, bytes.length, null, true, null);
                 count++;
+                if (count > 5)
+                    break;
+
             }
 
             filename = "animated_run.gif";

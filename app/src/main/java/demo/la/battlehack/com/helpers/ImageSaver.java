@@ -54,6 +54,6 @@ public enum ImageSaver {
 
 
     public List<Bitmap> getImages() {
-        return (List<Bitmap>) images.clone();
+        return (List<Bitmap>)      images.clone();
     }
 }
