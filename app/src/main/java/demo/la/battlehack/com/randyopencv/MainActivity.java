@@ -142,22 +142,27 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         mRgba = inputFrame.rgba();
 
         if (mIsColorSelected) {
-            mDetector.process(mRgba);
-            List<MatOfPoint> contours = mDetector.getContours();
-            Log.e(LOG_TAG, "Contours count: " + contours.size());
-            Imgproc.drawContours(mRgba, contours, -1, CONTOUR_COLOR);
-
-            Mat colorLabel = mRgba.submat(4, 68, 4, 68);
-            colorLabel.setTo(mBlobColorRgba);
-
-            Mat spectrumLabel = mRgba.submat(4, 4 + mSpectrum.rows(), 70, 70 + mSpectrum.cols());
-            mSpectrum.copyTo(spectrumLabel);
+            mDetector.processFilterColor(mRgba);
+//            List<MatOfPoint> contours = mDetector.getContours();
+//            Log.e(LOG_TAG, "Contours count: " + contours.size());
+//            Imgproc.drawContours(mRgba, contours, -1, CONTOUR_COLOR);
+//
+//            Mat colorLabel = mRgba.submat(4, 68, 4, 68);
+//            colorLabel.setTo(mBlobColorRgba);
+//
+//            Mat spectrumLabel = mRgba.submat(4, 4 + mSpectrum.rows(), 70, 70 + mSpectrum.cols());
+//            mSpectrum.copyTo(spectrumLabel);
         }
 
-        return mRgba;    }
+        return mRgba;
+    }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (mIsColorSelected) {
+            return true;
+        }
+
         int cols = mRgba.cols();
         int rows = mRgba.rows();
 
@@ -196,8 +201,6 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
                 ", " + mBlobColorRgba.val[2] + ", " + mBlobColorRgba.val[3] + ")");
 
         mDetector.setHsvColor(mBlobColorHsv);
-
-        Imgproc.resize(mDetector.getSpectrum(), mSpectrum, SPECTRUM_SIZE);
 
         mIsColorSelected = true;
 
