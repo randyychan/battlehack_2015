@@ -15,6 +15,7 @@ public enum DropboxUtil {
     private static final String DROPBOX_APP_KEY = "7e6llv53ut0cewx";
     private static final String DROPBOX_APP_SECRET = "v43rd7t45jmi6dq";
 
+    String accessToken = null;
     private static DropboxAPI<AndroidAuthSession> mDBApi;
 
     static {
@@ -28,6 +29,17 @@ public enum DropboxUtil {
     public void auth(Context context) {
         mDBApi.getSession().startOAuth2Authentication(context);
     }
+
+    public void finishAuth() { mDBApi.getSession().finishAuthentication(); }
+
+    public String getAccessToken() {
+        if (accessToken == null) {
+            accessToken = mDBApi.getSession().getOAuth2AccessToken();
+        }
+
+        return accessToken;
+    }
+
 
     public DropboxAPI<AndroidAuthSession> getDbApi() {
         return mDBApi;

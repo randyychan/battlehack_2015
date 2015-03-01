@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import demo.la.battlehack.com.helpers.DropboxUtil;
 import demo.la.battlehack.com.randyopencv.R;
 
 /**
@@ -24,7 +25,7 @@ public class RoleActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        DropboxUtil.INSTANCE.auth(RoleActivity.this);
         context = this;
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -82,5 +83,20 @@ public class RoleActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (DropboxUtil.INSTANCE.getDbApi().getSession().authenticationSuccessful()) {
+            try {
+                // Required to complete auth, sets the access token on the session
+                DropboxUtil.INSTANCE.finishAuth();
+
+                String accessToken = DropboxUtil.INSTANCE.getAccessToken();
+            } catch (IllegalStateException e) {
+            }
+        }
     }
 }

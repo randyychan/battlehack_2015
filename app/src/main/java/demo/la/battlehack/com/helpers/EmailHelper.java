@@ -49,19 +49,19 @@ public class EmailHelper {
             email.setFrom("noreply@nsa.battlehack");
             email.setSubject("Summary of Your Run!");
 
-
+            long curTime = System.currentTimeMillis();
+            Object[] bitMapDataArray = new Object[10];
             int count = 0;
             for (Bitmap bitmap : ImageSaver.INSTANCE.getImages()) {
                 Log.e("RANDY", "ATTACHING EMAIL!! " + count);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
                 byte[] bitmapdata = bos.toByteArray();
+                bitMapDataArray[count] = bitmapdata;
                 ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
                 String filename = "image" + count + ".jpg";
                 email.addAttachment(filename, bs);
-                // send to Dropbox
-//                DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
-//                        bs, bitmapdata.length, null, true, null);
+
                 count++;
                 if (count > 5)
                     break;
@@ -72,8 +72,8 @@ public class EmailHelper {
             String filename = "animated_run.gif";
             email.addAttachment(filename, bs);
             // send to Dropbox
-//            DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
-//                    bs, gifArray.length, null, true, null);
+            DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + curTime + "/" + filename,
+                    bs, gifArray.length, null, true, null);
 
             String text = "Thanks for using NoStringsAttached!\n\n";
             text += "Here is your summary:\n" +
@@ -90,9 +90,28 @@ public class EmailHelper {
             } catch (SendGridException e) {
                 System.err.println(e);
             }
+
+
+            count = 0;
+            for (Object bss : bitMapDataArray) {
+                filename = "image" + count + ".jpg";
+                byte[] bytes = (byte[]) bss;
+                bs = new ByteArrayInputStream(bytes);
+                DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + curTime + "/" + filename,
+                        bs, bytes.length, null, true, null);
+                count++;
+            }
+
+            filename = "animated_run.gif";
+
+            DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + curTime + "/" + filename,
+                    bs, gifArray.length, null, true, null);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     public byte[] generateGIF() {

@@ -39,7 +39,7 @@ public class NsaApplication extends Application {
 
         // Dropbox init
         Log.e("NsaApplication Dropbox", "init Dropbox");
-        DropboxUtil.INSTANCE.auth(this);
+//        DropboxUtil.INSTANCE.finishAuth();
 
     }
 

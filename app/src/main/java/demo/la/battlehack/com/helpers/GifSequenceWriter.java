@@ -24,7 +24,7 @@ public class GifSequenceWriter {
 
     protected int repeat = -1; // no repeat
 
-    protected int delay = 200; // frame delay (hundredths)
+    protected int delay = 100; // frame delay (hundredths)
 
     protected boolean started = false; // ready to output frames
 

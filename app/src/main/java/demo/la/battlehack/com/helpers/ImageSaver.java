@@ -41,8 +41,6 @@ public enum ImageSaver {
             public void run() {
                 Imgproc.pyrDown(mat, mat);
                 Imgproc.pyrDown(mat, mat);
-                Imgproc.pyrDown(mat, mat);
-
                 Bitmap bmp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(mat, bmp);
                 images.add(bmp);
