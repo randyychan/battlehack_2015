@@ -40,7 +40,7 @@ public class ColorBlobDetector {
     private float rawRadius = 0;
     private int rawWidth = 0;
     private int rawHeight = 0;
-
+    private boolean isTooClose = false;
     private double normalizedX = 0;
     private double normalizedY = 0;
 
@@ -148,11 +148,17 @@ public class ColorBlobDetector {
         Log.e("RANDY", "Normalized value X: " + normalizedX + "  Normalized value Y: " + normalizedY);
 
         if (normalizedX > 0) {
-            Core.putText(rgbaImage, "right: " + normalizedX, pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+            Core.putText(rgbaImage, "right: " + String.format( "%.2f", normalizedX ), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+            pt.y = 300;
+            Core.putText(rgbaImage, "radius: " + String.format( "%.2f", radius[0]), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
         } else if (normalizedX < 0){
-            Core.putText(rgbaImage, "left: " + normalizedX, pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+            Core.putText(rgbaImage, "left: " + String.format( "%.2f", normalizedX ), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+            pt.y = 300;
+            Core.putText(rgbaImage, "radius: " + String.format( "%.2f", radius[0]), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
         } else {
             Core.putText(rgbaImage, "centered", pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
+            pt.y = 300;
+            Core.putText(rgbaImage, "radius: " + String.format( "%.2f", radius[0]), pt, Core.FONT_HERSHEY_DUPLEX, 4f, CONTOUR_COLOR);
         }
         mPyrDownMat.release();
     }
@@ -195,7 +201,22 @@ public class ColorBlobDetector {
         clipLowerBounds();
 
         if (updateCallback != null) {
-            updateCallback.onRangeUpdate(normalizedX, normalizedY);
+
+            if (rawRadius > 300 && !isTooClose) {
+                Log.e("RANDY", "normalize is too close");
+                isTooClose = true;
+                updateCallback.onRangeUpdate(0, 0);
+
+                updateCallback.distanceClose(true);
+            } else {
+                Log.e("RANDY", "normalize not too close");
+
+                isTooClose = false;
+                updateCallback.distanceClose(false);
+
+                updateCallback.onRangeUpdate(normalizedX, normalizedY);
+
+            }
         }
     }
 
@@ -209,6 +230,7 @@ public class ColorBlobDetector {
 
     public interface UpdateCallback {
         void onRangeUpdate(double rangeX, double rangeY);
+        void distanceClose(boolean isTooClose);
     }
 
 

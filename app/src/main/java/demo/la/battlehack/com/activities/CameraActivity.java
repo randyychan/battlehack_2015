@@ -205,7 +205,12 @@ public class CameraActivity extends ActionBarActivity implements View.OnTouchLis
         audioOutput.setNum(rangeX);
 
         if (!audioOutput.isPlaying() && Math.abs(rangeX) > Constants.LOWER_THRESHOLD) {
-            audioOutput.startBeep();
+            audioOutput.startBeep(0);
         }
+    }
+
+    @Override
+    public void distanceClose(boolean isTooClose) {
+        audioOutput.isTooClose(isTooClose);
     }
 }
