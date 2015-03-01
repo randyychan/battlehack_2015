@@ -20,7 +20,7 @@ import org.opencv.imgproc.Imgproc;
 
 import demo.la.battlehack.com.audio.AudioOutput;
 import demo.la.battlehack.com.image.ColorBlobDetector;
-import demo.la.battlehack.com.randyopencv.Constants;
+import demo.la.battlehack.com.helpers.Constants;
 import demo.la.battlehack.com.randyopencv.R;
 
 public class MainActivity extends ActionBarActivity implements View.OnTouchListener, CameraBridgeViewBase.CvCameraViewListener2, ColorBlobDetector.UpdateCallback {

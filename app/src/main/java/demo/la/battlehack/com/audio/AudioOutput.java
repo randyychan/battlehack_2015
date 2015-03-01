@@ -7,13 +7,11 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
 
-import demo.la.battlehack.com.randyopencv.Constants;
+import demo.la.battlehack.com.helpers.Constants;
 import demo.la.battlehack.com.randyopencv.R;
 
 /**
