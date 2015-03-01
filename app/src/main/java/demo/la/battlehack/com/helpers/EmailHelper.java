@@ -60,8 +60,8 @@ public class EmailHelper {
                 String filename = "image" + count + ".jpg";
                 email.addAttachment(filename, bs);
                 // send to Dropbox
-                DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
-                        bs, bitmapdata.length, null, true, null);
+//                DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
+//                        bs, bitmapdata.length, null, true, null);
                 count++;
                 if (count > 5)
                     break;
@@ -72,8 +72,8 @@ public class EmailHelper {
             String filename = "animated_run.gif";
             email.addAttachment(filename, bs);
             // send to Dropbox
-            DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
-                    bs, gifArray.length, null, true, null);
+//            DropboxUtil.INSTANCE.getDbApi().putFile("/battlehack/" + filename,
+//                    bs, gifArray.length, null, true, null);
 
             String text = "Thanks for using NoStringsAttached!\n\n";
             text += "Here is your summary:\n" +
