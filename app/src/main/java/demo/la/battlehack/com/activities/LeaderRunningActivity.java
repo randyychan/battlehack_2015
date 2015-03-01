@@ -44,6 +44,9 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
                     @Override
                     public void done(ParseException e) {
                         // generate Venmo request
+
+                        Intent venmoIntent = VenmoLibrary.openVenmoPayment(appId, appName, recipient, amount, note, txn);
+                        startActivityForResult(venmoIntent, REQUEST_CODE_VENMO_APP_SWITCH);
                     }
                 });
             }
