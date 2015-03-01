@@ -44,6 +44,7 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
                     @Override
                     public void done(ParseException e) {
                         // generate Venmo request
+                        finish();
                     }
                 });
             }

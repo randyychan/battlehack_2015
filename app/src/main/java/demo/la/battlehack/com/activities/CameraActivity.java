@@ -92,6 +92,7 @@ public class CameraActivity extends ActionBarActivity implements View.OnTouchLis
     @Override
     protected void onStop() {
         super.onStop();
+        finish();
     }
 
     @Override
