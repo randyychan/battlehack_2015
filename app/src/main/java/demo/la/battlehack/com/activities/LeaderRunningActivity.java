@@ -1,5 +1,6 @@
 package demo.la.battlehack.com.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -14,6 +15,7 @@ import demo.la.battlehack.com.helpers.DataStore;
 import demo.la.battlehack.com.helpers.ParseSender;
 import demo.la.battlehack.com.helpers.TimerHelper;
 import demo.la.battlehack.com.randyopencv.R;
+import demo.la.battlehack.com.venmo.VenmoLibrary;
 
 /**
  * Created by ksutardji on 2/28/15.
@@ -44,6 +46,12 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
                     @Override
                     public void done(ParseException e) {
                         // generate Venmo request
+                        Intent venmoIntent = VenmoLibrary.openVenmoPayment("2410", "NoStringsAttached",
+                                DataStore.recipientVenmo,
+                                String.valueOf(calculateAmount()),
+                                "Thanks for running with me! for " + DataStore.totalTime + "seconds.",
+                                "charge");
+                        startActivityForResult(venmoIntent, 1111);
                         finish();
                     }
                 });
@@ -51,6 +59,10 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
         });
 
         timerHelper.startTimer();
+    }
+
+    private double calculateAmount() {
+        return DataStore.totalTime * 10;
     }
 
     private void setRunning(boolean running) {

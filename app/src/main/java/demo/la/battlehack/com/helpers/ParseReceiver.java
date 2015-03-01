@@ -57,6 +57,7 @@ public class ParseReceiver extends ParsePushBroadcastReceiver {
 
     private void startFollowerService() {
         Intent intent = new Intent(context, CameraActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -65,6 +66,7 @@ public class ParseReceiver extends ParsePushBroadcastReceiver {
 
         try {
             Intent intent = pm.getLaunchIntentForPackage("com.venmo");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             if(intent != null) {
                 context.startActivity(intent);
