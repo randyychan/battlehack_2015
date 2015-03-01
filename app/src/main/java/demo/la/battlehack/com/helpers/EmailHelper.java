@@ -46,6 +46,7 @@ public class EmailHelper {
             // Sendgrid init
             SendGrid.Email email = new SendGrid.Email();
             email.addTo("randyychan@gmail.com");
+            email.addCc("ksutardji@gmail.com");
             email.setFrom("noreply@nsa.battlehack");
             email.setSubject("Summary of Your Run!");
 
@@ -79,7 +80,7 @@ public class EmailHelper {
             text += "Here is your summary:\n" +
                     "Your running partner: " + DataStore.leader + "\n" +
                     "You ran: " + DataStore.totalTime + " seconds.\n" +
-                    // TODO: add pictures or gifs
+                    "You thanked " + DataStore.leader + " with $" + DataStore.totalAmount + "\n" +
                     "\n" +
                     "Brought to you by NoStringsAttached";
             email.setText(text);
