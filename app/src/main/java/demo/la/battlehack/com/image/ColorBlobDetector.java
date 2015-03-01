@@ -1,6 +1,7 @@
 package demo.la.battlehack.com.image;
 
 import android.os.Handler;
+import android.util.Log;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -28,7 +29,7 @@ public class ColorBlobDetector {
     private Scalar mUpperBound = new Scalar(0);
     // Minimum contour area in percent for contours filtering
     // Color radius for range checking in HSV color space
-    private Scalar mColorRadius = new Scalar(25,50,50,0);
+    private Scalar mColorRadius = new Scalar(25,50,70,0);
     private MatOfPoint2f  matOfPoint2f;
             // Cache
     private Mat mPyrDownMat = new Mat();
@@ -122,17 +123,28 @@ public class ColorBlobDetector {
         MatOfPoint drawThisContour = null;
         while (each.hasNext()) {
             MatOfPoint contour = each.next();
-            if (drawThisContour == null) {
+            if (drawThisContour == null && Imgproc.contourArea(contour) > 900) {
                 drawThisContour = contour;
             }
-            else if (Imgproc.contourArea(contour) > Imgproc.contourArea(drawThisContour)) {
+            else if (drawThisContour != null && Imgproc.contourArea(contour) > Imgproc.contourArea(drawThisContour)) {
                 drawThisContour = contour;
             }
         }
 
-        if (drawThisContour == null)
-            return;
+        if (drawThisContour == null) {
+            if (!isTooClose) {
+                isTooClose = true;
+                updateCallback.onRangeUpdate(0, 0);
 
+                updateCallback.distanceClose(true);
+            }
+            return;
+        } else if (isTooClose) {
+            isTooClose = false;
+            updateCallback.distanceClose(false);
+        }
+
+        Log.e("RANDY", "AREA IS : " + Imgproc.contourArea(drawThisContour));
 
         Core.multiply(drawThisContour, new Scalar(8, 8), drawThisContour);
 
@@ -214,12 +226,12 @@ public class ColorBlobDetector {
 
         if (updateCallback != null) {
 
-            if (rawRadius > 300 && !isTooClose) {
+            if (rawRadius > Constants.DISTANCE_THRESHOLD && !isTooClose) {
                 isTooClose = true;
                 updateCallback.onRangeUpdate(0, 0);
 
                 updateCallback.distanceClose(true);
-            } else if (rawRadius <= 300 && isTooClose) {
+            } else if (rawRadius <= Constants.DISTANCE_THRESHOLD && isTooClose) {
 
 
                 isTooClose = false;

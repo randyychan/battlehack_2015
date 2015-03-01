@@ -5,7 +5,7 @@ package demo.la.battlehack.com.helpers;
  */
 public class Constants {
     public static double LOWER_THRESHOLD = 0.1f;
-
+    public static int DISTANCE_THRESHOLD = 400;
     public static final String SENDER = "sender";
     public static final String RECIPIENT = "recipient";
     public static final String TOTAL_TIME = "totalTime";

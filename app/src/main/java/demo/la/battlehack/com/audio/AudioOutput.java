@@ -24,7 +24,7 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
         LEFT, RIGHT, MIDDLE;
     }
     private boolean isTooClose = false;
-    private static final int constantPause = 100;
+    private static final int constantPause = 500;
     MediaPlayer mediaPlayer;
     Context context;
     boolean isPlaying = false,
@@ -69,10 +69,12 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
         handler.sendEmptyMessage(what);
     }
 
-    public void beep() {
+    public synchronized void beep() {
         try {
 
-            setIsPlaying(true);
+            if (isPlaying) {
+                return;
+            }
 
             long pauseFreq;
             while (true) {
@@ -96,15 +98,17 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
                     pauseFreq = freq(getNum());
 
                     // start beep
-                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) ;
-                    mediaPlayer.start();
-                    setIsPlaying(true);
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                        mediaPlayer.start();
+                        setIsPlaying(true);
+                    }
 
                     // pause frequency
                     Thread.sleep(constantPause);
 
                     if (mediaPlayer != null) {
                         mediaPlayer.pause();
+                        setIsPlaying(false);
                     }
                     // pause based on frequency
                     Thread.sleep(pauseFreq);
