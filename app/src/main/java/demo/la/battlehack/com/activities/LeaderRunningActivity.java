@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.ParsePush;
@@ -21,6 +22,7 @@ import demo.la.battlehack.com.venmo.VenmoLibrary;
  * Created by ksutardji on 2/28/15.
  */
 public class LeaderRunningActivity extends ActionBarActivity implements TimerHelper.TimerTickListener {
+    TextView durationTextView;
     Button stop;
     boolean running = false;
     TimerHelper timerHelper;
@@ -31,6 +33,8 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
         setContentView(R.layout.activity_leader);
 
         timerHelper = new TimerHelper(this);
+
+        durationTextView = (TextView) findViewById(R.id.durationTextView);
 
         stop = (Button) findViewById(R.id.stopButton);
         stop.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +87,7 @@ public class LeaderRunningActivity extends ActionBarActivity implements TimerHel
         Log.e("Leader", "TICK");
 
         DataStore.totalTime++;
-
+        durationTextView.setText(DataStore.totalTime);
 
     }
 }

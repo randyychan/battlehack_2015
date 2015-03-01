@@ -34,10 +34,10 @@ public class EmailHelper {
             email.setFrom("noreply@nsa.battlehack");
             email.setSubject("Summary of Your Run!");
 
-            String text = "Thanks for using NoStringsAttached! Here is your summary!";
-            text += "Here is your summary:\n" +
+            String text = "Thanks for using NoStringsAttached! Here is your summary!\n";
+            text += "Here is your summary:\n\n" +
                     "Your running partner: " + DataStore.leader + "\n" +
-                    "You ran: " + DataStore.totalTime + " seconds.\n" +
+                    "You ran: " + DataStore.totalTime + " seconds\n" +
                     // TODO: add pictures or gifs
                     "\n" +
                     "Brought to you by NoStringsAttached";
