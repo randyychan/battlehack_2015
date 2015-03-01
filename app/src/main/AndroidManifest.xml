@@ -25,6 +25,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:name="demo.la.battlehack.com.NsaApplication"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -48,9 +49,12 @@
         </activity>
         <activity
             android:name="demo.la.battlehack.com.activities.LeaderSetUpActivity"
-            android:label="@string/title_activity_leader_set_up" >
+            android:label="Running partner Info" >
         </activity>
-
+        <activity
+            android:name="demo.la.battlehack.com.activities.FollowerSetUpActivity"
+            android:label="Send Venmo info to partner!" >
+        </activity>
         <!-- Parse Push Permissions -->
         <service android:name="com.parse.PushService" />
 

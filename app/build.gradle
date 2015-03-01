@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':libraries:opencv')
     compile files('src/main/libs/Parse-1.7.0.jar')
+    compile files('src/main/libs/ndeftools-1.2.3.jar')
 }

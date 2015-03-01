@@ -10,9 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.ndeftools.Message;
+import org.ndeftools.MimeRecord;
+
+import java.io.UnsupportedEncodingException;
+
 import demo.la.battlehack.com.randyopencv.R;
 
-public class LeaderSetUpActivity extends ActionBarActivity {
+public class FollowerSetUpActivity extends ActionBarActivity {
 
     NfcAdapter mNfcAdapter;
     PendingIntent mNfcPendingIntent;
@@ -47,13 +52,22 @@ public class LeaderSetUpActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mNfcAdapter.disableForegroundDispatch(this);
+        mNfcAdapter.disableForegroundNdefPush(this);
     }
 
     private void enableNdefExchangeMode() {
+        MimeRecord mimeRecord = new MimeRecord();
+        mimeRecord.setMimeType("text/plain");
+        try {
+            mimeRecord.setData("This is my data".getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent,
-                mNdefExchangeFilters, null);
+        Message message = new Message();
+        message.add(mimeRecord);
+
+        mNfcAdapter.enableForegroundNdefPush(FollowerSetUpActivity.this, message.getNdefMessage());
     }
 
     @Override
