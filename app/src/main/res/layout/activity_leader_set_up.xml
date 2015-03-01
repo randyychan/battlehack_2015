@@ -1,23 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="demo.la.battlehack.com.activities.LeaderSetUpActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/app_icon"
-        android:layout_centerInParent="true"
-        android:id="@+id/image"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/setupcomplete"
+        android:visibility="gone">
 
-    <TextView android:text="Waiting for buddy info..." android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/image"
-        android:textSize="20sp"
-        android:paddingBottom="10dp"
-        android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/app_icon"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/image2"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="100dp"
+            />
 
-</RelativeLayout>
+
+        <LinearLayout
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_below="@id/image2">
+
+            <TextView android:text="Name: Thomas W. Tsang" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:paddingBottom="10dp"
+                android:layout_centerHorizontal="true"/>
+            <TextView android:text="Email: thomaswtsang@gmail.com" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:paddingBottom="10dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:layout_marginTop="60dp"
+                android:text="Start Run!" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:padding="20dp"
+                android:paddingBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/start_button"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout  android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="demo.la.battlehack.com.activities.LeaderSetUpActivity"
+        android:id="@+id/setup"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/app_icon"
+            android:layout_centerInParent="true"
+            android:id="@+id/image"/>
+
+        <TextView android:text="Wait for buddy info..." android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/image"
+            android:textSize="20sp"
+            android:paddingBottom="10dp"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</FrameLayout>
+

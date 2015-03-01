@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import demo.la.battlehack.com.randyopencv.R;
@@ -18,11 +19,25 @@ public class LeaderSetUpActivity extends ActionBarActivity {
     PendingIntent mNfcPendingIntent;
     IntentFilter[] mNdefExchangeFilters;
 
+    View setup;
+    View setupcomplete;
+    View startButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_set_up);
 
+        setup = findViewById(R.id.setup);
+        setupcomplete = findViewById(R.id.setupcomplete);
+
+        startButton = findViewById(R.id.start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // start timer activity and send gcm to follower to start.
+            }
+        });
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
@@ -62,7 +77,10 @@ public class LeaderSetUpActivity extends ActionBarActivity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 //            NdefMessage[] msgs = NfcUtils.getNdefMessages(intent);
 //            fireFriendRequest(msgs[0]);
-            Toast.makeText(this, "sent friend request via nfc!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Got Venmo!!", Toast.LENGTH_LONG).show();
+
+            setup.setVisibility(View.GONE);
+            setupcomplete.setVisibility(View.VISIBLE);
         }
     }
 
