@@ -79,6 +79,7 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
                     // no need to beep
                     if (mediaPlayer.isPlaying())
                         mediaPlayer.pause();
+
                     setIsPlaying(false);
                     break;
                 }
@@ -90,14 +91,16 @@ public class AudioOutput implements MediaPlayer.OnPreparedListener, MediaPlayer.
                 pauseFreq = freq(getNum());
 
                 // start beep
-                if (!mediaPlayer.isPlaying());
+                if (mediaPlayer != null && !mediaPlayer.isPlaying());
                     mediaPlayer.start();
                 setIsPlaying(true);
 
                 // pause frequency
                 Thread.sleep(constantPause);
 
-                mediaPlayer.pause();
+                if (mediaPlayer != null) {
+                    mediaPlayer.pause();
+                }
                 // pause based on frequency
                 Thread.sleep(pauseFreq);
 

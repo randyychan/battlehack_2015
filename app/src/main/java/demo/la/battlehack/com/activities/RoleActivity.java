@@ -33,7 +33,7 @@ public class RoleActivity extends ActionBarActivity {
         followerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, CameraActivity.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +41,7 @@ public class RoleActivity extends ActionBarActivity {
         leaderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, LeaderActivity.class);
+                Intent intent = new Intent(context, LeaderSetUpActivity.class);
                 startActivity(intent);
 
             }

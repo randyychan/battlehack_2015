@@ -23,7 +23,7 @@ import demo.la.battlehack.com.image.ColorBlobDetector;
 import demo.la.battlehack.com.randyopencv.Constants;
 import demo.la.battlehack.com.randyopencv.R;
 
-public class MainActivity extends ActionBarActivity implements View.OnTouchListener, CameraBridgeViewBase.CvCameraViewListener2, ColorBlobDetector.UpdateCallback {
+public class CameraActivity extends ActionBarActivity implements View.OnTouchListener, CameraBridgeViewBase.CvCameraViewListener2, ColorBlobDetector.UpdateCallback {
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
 
                     Log.i(LOG_TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
-                    mOpenCvCameraView.setOnTouchListener(MainActivity.this);
+                    mOpenCvCameraView.setOnTouchListener(CameraActivity.this);
                     break;
                 default:
                     super.onManagerConnected(status);
@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         }
     };
 
-    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String LOG_TAG = CameraActivity.class.getSimpleName();
 
     private CameraBridgeViewBase    mOpenCvCameraView;
     private boolean                 mIsColorSelected = false;
@@ -99,6 +99,9 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
         super.onDestroy();
         if (mOpenCvCameraView != null) {
             mOpenCvCameraView.disableView();
+        }
+        if (audioOutput != null) {
+            audioOutput.releaseMediaPlayer();
         }
     }
 
