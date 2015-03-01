@@ -2,6 +2,7 @@ package demo.la.battlehack.com.image;
 
 import android.util.Log;
 
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -93,7 +94,6 @@ public class ColorBlobDetector {
     }
 
     public void processFilterColor(Mat rgbaImage) {
-
         Imgproc.cvtColor(rgbaImage, rgbaImage, Imgproc.COLOR_RGB2HSV_FULL);
 //        Core.inRange(rgbaImage, lowerGreen, upperGreen, rgbaImage);
         Core.inRange(rgbaImage, mLowerBound, mUpperBound, rgbaImage);
@@ -208,7 +208,7 @@ public class ColorBlobDetector {
                 updateCallback.onRangeUpdate(0, 0);
 
                 updateCallback.distanceClose(true);
-            } else {
+            } else if (rawRadius <= 300 && isTooClose) {
                 Log.e("RANDY", "normalize not too close");
 
                 isTooClose = false;
@@ -216,6 +216,8 @@ public class ColorBlobDetector {
 
                 updateCallback.onRangeUpdate(normalizedX, normalizedY);
 
+            } else {
+                updateCallback.onRangeUpdate(normalizedX, normalizedY);
             }
         }
     }
