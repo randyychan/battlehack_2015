@@ -8,4 +8,9 @@ public class Constants {
 
     public static final String SENDER = "sender";
     public static final String RECIPIENT = "recipient";
+    public static final String TOTAL_TIME = "totalTime";
+
+    public static final String ACTION = "ACTION";
+    public static final String ACTION_START = "START";
+    public static final String ACTION_STOP = "STOP";
 }

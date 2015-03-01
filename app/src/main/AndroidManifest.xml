@@ -19,6 +19,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
+    <permission
+        android:name="demo.la.battlehack.com.randyopencv.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="demo.la.battlehack.com.randyopencv.permission.C2D_MESSAGE" />
+
+
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
@@ -36,13 +43,14 @@
             android:screenOrientation="landscape" >
             android:label="@string/app_name" >
         </activity>
-        <activity
-            android:name="demo.la.battlehack.com.activities.LeaderActivity"
-            android:label="@string/app_name" >
+        <activity android:name="demo.la.battlehack.com.activities.LeaderActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+
         </activity>
-        <activity
-            android:name="demo.la.battlehack.com.activities.RoleActivity"
-            android:label="@string/app_name" >
+        <activity android:name="demo.la.battlehack.com.activities.RoleActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,6 +65,7 @@
             android:name="demo.la.battlehack.com.activities.FollowerSetUpActivity"
             android:label="Send Venmo info to partner!" >
         </activity>
+
         <!-- Parse Push Permissions -->
         <service android:name="com.parse.PushService" />
 
@@ -74,7 +83,7 @@
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
                 <!-- IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name. -->
-                <category android:name="demo.la.battlehack.com" />
+                <category android:name="demo.la.battlehack.com.randyopencv" />
             </intent-filter>
         </receiver>
         <receiver
@@ -86,6 +95,11 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/ic_launcher" />
+
 
     </application>
 
